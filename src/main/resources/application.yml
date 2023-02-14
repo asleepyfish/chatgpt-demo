@@ -1,0 +1,4 @@
+chatgpt:
+  model: text-davinci-003
+  token: sk-xxxxxxxxxxxxxxxxx
+  retries: 10
