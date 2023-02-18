@@ -15,4 +15,9 @@ public class ChatGPTTest {
     public void testChatGPT() {
         OpenAiUtils.createCompletion("世界上最高的山峰是什么？").forEach(System.out::println);
     }
+
+    @Test
+    public void testGenerateImg() {
+        OpenAiUtils.createImage("英短").forEach(System.out::println);
+    }
 }
