@@ -1,4 +1,8 @@
 chatgpt:
   model: text-davinci-003
-  token: sk-xxxxxxxxxxxxxxxxx
+  chat-model: gpt-3.5-turbo
+  token: sk-xxxxxxxxxxxxxxxxxx
   retries: 10
+  proxy-host: 127.0.0.1
+  proxy-port: 7890
+  session-expiration-time: 30
