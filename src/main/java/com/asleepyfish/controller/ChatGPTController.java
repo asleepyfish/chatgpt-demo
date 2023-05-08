@@ -15,6 +15,7 @@ import java.util.List;
  */
 @RestController
 public class ChatGPTController {
+
     /**
      * 普通问答
      */
@@ -52,5 +53,13 @@ public class ChatGPTController {
     @GetMapping("/downloadImage")
     public void downloadImage(String prompt, HttpServletResponse response) {
         OpenAiUtils.downloadImage(prompt, response);
+    }
+
+    @GetMapping("/billingUsage")
+    public void billingUsage() {
+        String monthUsage = OpenAiUtils.billingUsage("2023-04-01", "2023-05-01");
+        System.out.println("四月使用：" + monthUsage + "美元");
+        String totalUsage = OpenAiUtils.billingUsage();
+        System.out.println("一共使用：" + totalUsage + "美元");
     }
 }
