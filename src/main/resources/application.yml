@@ -1,7 +1,7 @@
 chatgpt:
-  token: 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
-  proxy-host: 127.0.0.1 #国内服务器必选，国外服务器可不配置该参数
-  proxy-port: 7890 #国内服务器必选，国外服务器可不配置该参数
+  token: sk-xxxxxxxxxxxxxxxxxx
+  proxy-host: 127.0.0.1
+  proxy-port: 7890
   model: text-davinci-003 #可选
   chat-model: gpt-3.5-turbo #可选
   retries: 10 #可选，默认为5
