@@ -67,7 +67,7 @@ public class MainTest {
 
     @Test
     public void model() {
-        ChatGPTProperties properties = ChatGPTProperties.builder().token("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")
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
                 .proxyHost("127.0.0.1")
                 .proxyPort(7890)
                 .build();
