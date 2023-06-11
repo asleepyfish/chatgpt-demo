@@ -15,9 +15,8 @@
     <description>chatgpt-demo</description>
     <properties>
         <java.version>1.8</java.version>
-        <chatgpt.version>1.2.1</chatgpt.version>
+        <chatgpt.version>1.2.2</chatgpt.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -27,7 +26,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
         </dependency>
 
         <dependency>

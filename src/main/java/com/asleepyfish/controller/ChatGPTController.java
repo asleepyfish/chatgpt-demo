@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.Duration;
 import java.util.List;
 
 /**
@@ -22,7 +21,10 @@ import java.util.List;
 public class ChatGPTController {
 
     /**
-     * 普通问答
+     * 问答
+     *
+     * @param content 问题
+     * @return 答案
      */
     @GetMapping("/chat")
     public List<String> chat(String content) {
@@ -50,6 +52,16 @@ public class ChatGPTController {
         // 禁用缓存
         response.setHeader("Cache-Control", "no-cache");
         OpenAiUtils.createStreamChatCompletion(content, response.getOutputStream());
+    }
+
+    /**
+     * 生成图片
+     *
+     * @param prompt 图片描述
+     */
+    @GetMapping("/createImage")
+    public void createImage(String prompt) {
+        System.out.println(OpenAiUtils.createImage(prompt));
     }
 
     /**
@@ -83,13 +95,20 @@ public class ChatGPTController {
      */
     @GetMapping("/customToken")
     public void customToken() {
-        ChatGPTProperties chatGPTProperties = new ChatGPTProperties();
-        chatGPTProperties.setToken("sk-002xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-        chatGPTProperties.setProxyHost("127.0.0.1");
-        chatGPTProperties.setProxyPort(7890);
-        OpenAiProxyService openAiProxyService = new OpenAiProxyService(chatGPTProperties, Duration.ZERO);
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-002xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+                .proxyHost("127.0.0.1")
+                .proxyHost("7890")
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
         // 直接使用new出来的openAiProxyService来调用方法，每个OpenAiProxyService都拥有自己的Token。
         // 这样在一个SpringBoot项目中，就可以有多个Token，可以有更多的免费额度供使用了
         openAiProxyService.createStreamChatCompletion("Java的三大特性是什么");
+    }
+
+    @GetMapping("/models")
+    public void models() {
+        System.out.println("models列表：" + OpenAiUtils.listModels());
+        System.out.println("=============================================");
+        System.out.println("text-davinci-003信息：" + OpenAiUtils.getModel("text-davinci-003"));
     }
 }
