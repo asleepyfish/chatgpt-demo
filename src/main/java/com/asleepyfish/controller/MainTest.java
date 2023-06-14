@@ -3,6 +3,7 @@ package com.asleepyfish.controller;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
+import io.github.asleepyfish.enums.edit.EditModelEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import org.junit.jupiter.api.Test;
 
@@ -75,5 +76,26 @@ public class MainTest {
         System.out.println("models列表：" + openAiProxyService.listModels());
         System.out.println("=============================================");
         System.out.println("text-davinci-003信息：" + openAiProxyService.getModel("text-davinci-003"));
+    }
+
+    @Test
+    public void edit() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        String input = "What day of the wek is it?";
+        String instruction = "Fix the spelling mistakes";
+        System.out.println("编辑前：" + input);
+        // 下面这句和openAiProxyService.edit(input, instruction, EditModelEnum.TEXT_DAVINCI_EDIT_001);是一样的，默认使用模型TEXT_DAVINCI_EDIT_001
+        System.out.println("编辑后：" + openAiProxyService.edit(input, instruction));
+        System.out.println("=============================================");
+        input = "    public static void mian([String] args) {\n" +
+                "        system.in.println(\"hello world\");\n" +
+                "    }";
+        instruction = "Fix the code mistakes";
+        System.out.println("修正代码前：\n" + input);
+        System.out.println("修正代码后：\n" + openAiProxyService.edit(input, instruction, EditModelEnum.CODE_DAVINCI_EDIT_001));
     }
 }

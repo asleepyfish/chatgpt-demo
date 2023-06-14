@@ -3,9 +3,11 @@ package com.asleepyfish.controller;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
+import io.github.asleepyfish.enums.edit.EditModelEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import io.github.asleepyfish.util.OpenAiUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
@@ -59,7 +61,7 @@ public class ChatGPTController {
      *
      * @param prompt 图片描述
      */
-    @GetMapping("/createImage")
+    @PostMapping("/createImage")
     public void createImage(String prompt) {
         System.out.println(OpenAiUtils.createImage(prompt));
     }
@@ -72,7 +74,7 @@ public class ChatGPTController {
         OpenAiUtils.downloadImage(prompt, response);
     }
 
-    @GetMapping("/billing")
+    @PostMapping("/billing")
     public void billing() {
         String monthUsage = OpenAiUtils.billingUsage("2023-04-01", "2023-05-01");
         System.out.println("四月使用：" + monthUsage + "美元");
@@ -93,7 +95,7 @@ public class ChatGPTController {
     /**
      * 自定义Token使用（解决单个SpringBoot项目中只能指定唯一的Token[sk-xxxxxxxxxxxxx]的问题，现在可以自定义ChatGPTProperties内容，添加更多的Token实例）
      */
-    @GetMapping("/customToken")
+    @PostMapping("/customToken")
     public void customToken() {
         ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-002xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
                 .proxyHost("127.0.0.1")
@@ -105,10 +107,29 @@ public class ChatGPTController {
         openAiProxyService.createStreamChatCompletion("Java的三大特性是什么");
     }
 
-    @GetMapping("/models")
+    @PostMapping("/models")
     public void models() {
         System.out.println("models列表：" + OpenAiUtils.listModels());
         System.out.println("=============================================");
         System.out.println("text-davinci-003信息：" + OpenAiUtils.getModel("text-davinci-003"));
+    }
+
+    /**
+     * 编辑
+     */
+    @PostMapping("/edit")
+    public void edit() {
+        String input = "What day of the wek is it?";
+        String instruction = "Fix the spelling mistakes";
+        System.out.println("编辑前：" + input);
+        // 下面这句和OpenAiUtils.edit(input, instruction, EditModelEnum.TEXT_DAVINCI_EDIT_001);是一样的，默认使用模型TEXT_DAVINCI_EDIT_001
+        System.out.println("编辑后：" + OpenAiUtils.edit(input, instruction));
+        System.out.println("=============================================");
+        input = "    public static void mian(String[] args) {\n" +
+                "        system.in.println(\"hello world\");\n" +
+                "    }";
+        instruction = "Fix the code mistakes";
+        System.out.println("修正代码前：\n" + input);
+        System.out.println("修正代码后：\n" + OpenAiUtils.edit(input, instruction, EditModelEnum.CODE_DAVINCI_EDIT_001));
     }
 }
