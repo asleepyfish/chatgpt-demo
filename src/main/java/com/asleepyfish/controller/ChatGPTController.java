@@ -1,9 +1,11 @@
 package com.asleepyfish.controller;
 
+import com.theokanning.openai.embedding.EmbeddingRequest;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
 import io.github.asleepyfish.enums.edit.EditModelEnum;
+import io.github.asleepyfish.enums.embedding.EmbeddingModelEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import io.github.asleepyfish.util.OpenAiUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,12 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @Author: asleepyfish
  * @Date: 2023-02-18 14:44
- * @Description: ChatGPTController
+ * @Description: 注意：所有代码示例均有基于和SpringBoot和直接Main方法调用两种实现。分别在类MainTest和类ChatGPTController中。
  */
 @RestController
 public class ChatGPTController {
@@ -131,5 +134,18 @@ public class ChatGPTController {
         instruction = "Fix the code mistakes";
         System.out.println("修正代码前：\n" + input);
         System.out.println("修正代码后：\n" + OpenAiUtils.edit(input, instruction, EditModelEnum.CODE_DAVINCI_EDIT_001));
+    }
+
+    @PostMapping("/embeddings")
+    public void embeddings() {
+        String text = "Once upon a time";
+        System.out.println("文本：" + text);
+        System.out.println("文本的嵌入向量：" + OpenAiUtils.embeddings(text));
+        System.out.println("=============================================");
+        String[] texts = {"Once upon a time", "There was a princess"};
+        System.out.println("文本数组：" + Arrays.toString(texts));
+        EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
+                .model(EmbeddingModelEnum.TEXT_EMBEDDING_ADA_002.getModelName()).input(Arrays.asList(texts)).build();
+        System.out.println("文本数组的嵌入向量：" + OpenAiUtils.embeddings(embeddingRequest));
     }
 }

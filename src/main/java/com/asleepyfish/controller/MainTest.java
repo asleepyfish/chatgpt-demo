@@ -1,16 +1,20 @@
 package com.asleepyfish.controller;
 
+import com.theokanning.openai.embedding.EmbeddingRequest;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
 import io.github.asleepyfish.enums.edit.EditModelEnum;
+import io.github.asleepyfish.enums.embedding.EmbeddingModelEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 /**
  * @Author: asleepyfish
  * @Date: 2023-06-11 21:18
- * @Description: MainTest
+ * @Description: 注意：所有代码示例均有基于和SpringBoot和直接Main方法调用两种实现。分别在类MainTest和类ChatGPTController中。
  */
 public class MainTest {
     @Test
@@ -97,5 +101,23 @@ public class MainTest {
         instruction = "Fix the code mistakes";
         System.out.println("修正代码前：\n" + input);
         System.out.println("修正代码后：\n" + openAiProxyService.edit(input, instruction, EditModelEnum.CODE_DAVINCI_EDIT_001));
+    }
+
+    @Test
+    public void embeddings() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        String text = "Once upon a time";
+        System.out.println("文本：" + text);
+        System.out.println("文本的嵌入向量：" + openAiProxyService.embeddings(text));
+        System.out.println("=============================================");
+        String[] texts = {"Once upon a time", "There was a princess"};
+        System.out.println("文本数组：" + Arrays.toString(texts));
+        EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
+                .model(EmbeddingModelEnum.TEXT_EMBEDDING_ADA_002.getModelName()).input(Arrays.asList(texts)).build();
+        System.out.println("文本数组的嵌入向量：" + openAiProxyService.embeddings(embeddingRequest));
     }
 }
