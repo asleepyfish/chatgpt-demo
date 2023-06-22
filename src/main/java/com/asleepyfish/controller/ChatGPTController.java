@@ -4,6 +4,7 @@ import com.theokanning.openai.embedding.EmbeddingRequest;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
+import io.github.asleepyfish.enums.audio.AudioResponseFormatEnum;
 import io.github.asleepyfish.enums.edit.EditModelEnum;
 import io.github.asleepyfish.enums.embedding.EmbeddingModelEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -147,5 +149,17 @@ public class ChatGPTController {
         EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
                 .model(EmbeddingModelEnum.TEXT_EMBEDDING_ADA_002.getModelName()).input(Arrays.asList(texts)).build();
         System.out.println("文本数组的嵌入向量：" + OpenAiUtils.embeddings(embeddingRequest));
+    }
+
+    @PostMapping("/transcription")
+    public void transcription() {
+        File file = new File("D:/downloads/69906300839135318.mp3");
+        System.out.println("语音文件转录后的text文本是：" + OpenAiUtils.transcription(file, AudioResponseFormatEnum.TEXT));
+    }
+
+    @PostMapping("/translation")
+    public void translation() {
+        File file = new File("D:/downloads/69906300839135318.mp3");
+        System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(file, AudioResponseFormatEnum.TEXT));
     }
 }
