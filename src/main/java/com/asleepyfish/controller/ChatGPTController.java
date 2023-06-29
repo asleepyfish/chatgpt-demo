@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -153,13 +152,17 @@ public class ChatGPTController {
 
     @PostMapping("/transcription")
     public void transcription() {
-        File file = new File("D:/downloads/69906300839135318.mp3");
-        System.out.println("语音文件转录后的text文本是：" + OpenAiUtils.transcription(file, AudioResponseFormatEnum.TEXT));
+        String filePath = "src/main/resources/audio/想象之中-许嵩.mp3";
+        System.out.println("语音文件转录后的text文本是：" + OpenAiUtils.transcription(filePath, AudioResponseFormatEnum.TEXT));
+        // File file = new File("src/main/resources/audio/想象之中-许嵩.mp3");
+        // System.out.println("语音文件转录后的text文本是：" + OpenAiUtils.transcription(file, AudioResponseFormatEnum.TEXT));
     }
 
     @PostMapping("/translation")
     public void translation() {
-        File file = new File("D:/downloads/69906300839135318.mp3");
-        System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(file, AudioResponseFormatEnum.TEXT));
+        String filePath = "src/main/resources/audio/想象之中-许嵩.mp3";
+        System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(filePath, AudioResponseFormatEnum.TEXT));
+        // File file = new File("src/main/resources/audio/想象之中-许嵩.mp3");
+        // System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(file, AudioResponseFormatEnum.TEXT));
     }
 }

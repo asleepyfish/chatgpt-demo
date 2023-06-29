@@ -1,16 +1,19 @@
 package com.asleepyfish.controller;
 
 import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.image.CreateImageEditRequest;
+import com.theokanning.openai.image.ImageResult;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
 import io.github.asleepyfish.enums.audio.AudioResponseFormatEnum;
 import io.github.asleepyfish.enums.edit.EditModelEnum;
 import io.github.asleepyfish.enums.embedding.EmbeddingModelEnum;
+import io.github.asleepyfish.enums.image.ImageResponseFormatEnum;
+import io.github.asleepyfish.enums.image.ImageSizeEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import org.junit.jupiter.api.Test;
 
-import java.io.File;
 import java.util.Arrays;
 
 /**
@@ -131,8 +134,10 @@ public class MainTest {
                 .proxyPort(7890)
                 .build();
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
-        File file = new File("D:/downloads/69906300839135318.mp3");
-        System.out.println("语音文件转录后的json文本是：" + openAiProxyService.transcription(file, AudioResponseFormatEnum.JSON));
+        String filePath = "src/main/resources/audio/想象之中-许嵩.mp3";
+        System.out.println("语音文件转录后的json文本是：" + openAiProxyService.transcription(filePath, AudioResponseFormatEnum.JSON));
+        // File file = new File("src/main/resources/audio/想象之中-许嵩.mp3");
+        // System.out.println("语音文件转录后的json文本是：" + openAiProxyService.transcription(file, AudioResponseFormatEnum.JSON));
     }
 
     @Test
@@ -142,7 +147,23 @@ public class MainTest {
                 .proxyPort(7890)
                 .build();
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
-        File file = new File("D:/downloads/69906300839135318.mp3");
-        System.out.println("语音文件翻译成英文后的json文本是：" + openAiProxyService.translation(file, AudioResponseFormatEnum.JSON));
+        String filePath = "src/main/resources/audio/想象之中-许嵩.mp3";
+        System.out.println("语音文件翻译成英文后的json文本是：" + openAiProxyService.translation(filePath, AudioResponseFormatEnum.JSON));
+        // File file = new File("src/main/resources/audio/想象之中-许嵩.mp3");
+        // System.out.println("语音文件翻译成英文后的json文本是：" + openAiProxyService.translation(file, AudioResponseFormatEnum.JSON));
+    }
+
+    @Test
+    public void createImageEdit() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        CreateImageEditRequest createImageEditRequest = CreateImageEditRequest.builder().prompt("图片上加上“真好看”三个字")
+                .n(1)
+                .size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
+        ImageResult imageEdit = openAiProxyService.createImageEdit(createImageEditRequest, "src/main/resources/image/img.png", null);
+        System.out.println("图片编辑结果：" + imageEdit);
     }
 }
