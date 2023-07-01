@@ -1,12 +1,17 @@
 package com.asleepyfish.controller;
 
 import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.image.CreateImageEditRequest;
+import com.theokanning.openai.image.CreateImageVariationRequest;
+import com.theokanning.openai.image.ImageResult;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
 import io.github.asleepyfish.enums.audio.AudioResponseFormatEnum;
 import io.github.asleepyfish.enums.edit.EditModelEnum;
 import io.github.asleepyfish.enums.embedding.EmbeddingModelEnum;
+import io.github.asleepyfish.enums.image.ImageResponseFormatEnum;
+import io.github.asleepyfish.enums.image.ImageSizeEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import io.github.asleepyfish.util.OpenAiUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -164,5 +169,21 @@ public class ChatGPTController {
         System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(filePath, AudioResponseFormatEnum.TEXT));
         // File file = new File("src/main/resources/audio/想象之中-许嵩.mp3");
         // System.out.println("语音文件翻译成英文后的text文本是：" + OpenAiUtils.translation(file, AudioResponseFormatEnum.TEXT));
+    }
+
+    @PostMapping("/createImageEdit")
+    public void createImageEdit() {
+        CreateImageEditRequest createImageEditRequest = CreateImageEditRequest.builder().prompt("Background changed to white")
+                .n(1).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
+        ImageResult imageEdit = OpenAiUtils.createImageEdit(createImageEditRequest, "src/main/resources/image/img.png", "src/main/resources/image/mask.png");
+        System.out.println("图片编辑结果：" + imageEdit);
+    }
+
+    @PostMapping("/createImageVariation")
+    public void createImageVariation() {
+        CreateImageVariationRequest createImageVariationRequest = CreateImageVariationRequest.builder()
+                .n(2).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
+        ImageResult imageVariation = OpenAiUtils.createImageVariation(createImageVariationRequest, "src/main/resources/image/img.png");
+        System.out.println("图片变体结果：" + imageVariation);
     }
 }

@@ -2,6 +2,7 @@ package com.asleepyfish.controller;
 
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.image.CreateImageEditRequest;
+import com.theokanning.openai.image.CreateImageVariationRequest;
 import com.theokanning.openai.image.ImageResult;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
@@ -160,10 +161,22 @@ public class MainTest {
                 .proxyPort(7890)
                 .build();
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
-        CreateImageEditRequest createImageEditRequest = CreateImageEditRequest.builder().prompt("图片上加上“真好看”三个字")
-                .n(1)
-                .size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
-        ImageResult imageEdit = openAiProxyService.createImageEdit(createImageEditRequest, "src/main/resources/image/img.png", null);
+        CreateImageEditRequest createImageEditRequest = CreateImageEditRequest.builder().prompt("A sunlit indoor lounge area with a pool containing a flamingo")
+                .n(1).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
+        ImageResult imageEdit = openAiProxyService.createImageEdit(createImageEditRequest, "src/main/resources/image/img.png", "src/main/resources/image/mask.png");
         System.out.println("图片编辑结果：" + imageEdit);
+    }
+
+    @Test
+    public void createImageVariation() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        CreateImageVariationRequest createImageVariationRequest = CreateImageVariationRequest.builder()
+                .n(2).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
+        ImageResult imageVariation = openAiProxyService.createImageVariation(createImageVariationRequest, "src/main/resources/image/img.png");
+        System.out.println("图片变体结果：" + imageVariation);
     }
 }
