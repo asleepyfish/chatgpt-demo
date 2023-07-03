@@ -1,9 +1,12 @@
 package com.asleepyfish.controller;
 
+import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageVariationRequest;
 import com.theokanning.openai.image.ImageResult;
+import com.theokanning.openai.moderation.ModerationRequest;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
@@ -178,5 +181,64 @@ public class MainTest {
                 .n(2).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
         ImageResult imageVariation = openAiProxyService.createImageVariation(createImageVariationRequest, "src/main/resources/image/img.png");
         System.out.println("图片变体结果：" + imageVariation);
+    }
+
+    /**
+     * 文件操作（下面文件操作入参，用户可根据实际情况自行补全）
+     */
+    @Test
+    public void files() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        // 上传文件
+        System.out.println("上传文件信息：" + openAiProxyService.uploadFile("", ""));
+        // 获取文件列表
+        System.out.println("文件列表：" + openAiProxyService.listFiles());
+        // 获取文件信息
+        System.out.println("文件信息：" + openAiProxyService.retrieveFile(""));
+        // 获取文件内容
+        System.out.println("文件内容：" + openAiProxyService.retrieveFileContent(""));
+        // 删除文件
+        System.out.println("删除文件信息：" + openAiProxyService.deleteFile(""));
+    }
+
+    @Test
+    public void fileTune() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        // 创建微调
+        FineTuneRequest fineTuneRequest = FineTuneRequest.builder().trainingFile("").build();
+        System.out.println("创建微调信息：" + openAiProxyService.createFineTune(fineTuneRequest));
+        // 创建微调完成
+        CompletionRequest completionRequest = CompletionRequest.builder().build();
+        System.out.println("创建微调完成信息：" + openAiProxyService.createFineTuneCompletion(completionRequest));
+        // 获取微调列表
+        System.out.println("获取微调列表：" + openAiProxyService.listFineTunes());
+        // 获取微调信息
+        System.out.println("获取微调信息：" + openAiProxyService.retrieveFineTune(""));
+        // 取消微调
+        System.out.println("取消微调信息：" + openAiProxyService.cancelFineTune(""));
+        // 列出微调事件
+        System.out.println("列出微调事件：" + openAiProxyService.listFineTuneEvents(""));
+        // 删除微调
+        System.out.println("删除微调信息：" + openAiProxyService.deleteFineTune(""));
+    }
+
+    @Test
+    public void moderation() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        // 创建moderation
+        ModerationRequest moderationRequest = ModerationRequest.builder().input("I want to kill them.").build();
+        System.out.println("创建moderation信息：" + openAiProxyService.createModeration(moderationRequest));
     }
 }

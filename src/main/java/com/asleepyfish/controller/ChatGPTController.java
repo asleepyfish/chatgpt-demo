@@ -1,9 +1,12 @@
 package com.asleepyfish.controller;
 
+import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
+import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.image.CreateImageEditRequest;
 import com.theokanning.openai.image.CreateImageVariationRequest;
 import com.theokanning.openai.image.ImageResult;
+import com.theokanning.openai.moderation.ModerationRequest;
 import io.github.asleepyfish.config.ChatGPTProperties;
 import io.github.asleepyfish.entity.billing.Billing;
 import io.github.asleepyfish.entity.billing.Subscription;
@@ -185,5 +188,49 @@ public class ChatGPTController {
                 .n(2).size(ImageSizeEnum.S512x512.getSize()).responseFormat(ImageResponseFormatEnum.URL.getResponseFormat()).build();
         ImageResult imageVariation = OpenAiUtils.createImageVariation(createImageVariationRequest, "src/main/resources/image/img.png");
         System.out.println("图片变体结果：" + imageVariation);
+    }
+
+    /**
+     * 文件操作（下面文件操作入参，用户可根据实际情况自行补全）
+     */
+    @PostMapping("/files")
+    public void files() {
+        // 上传文件
+        System.out.println("上传文件信息：" + OpenAiUtils.uploadFile("", ""));
+        // 获取文件列表
+        System.out.println("文件列表：" + OpenAiUtils.listFiles());
+        // 获取文件信息
+        System.out.println("文件信息：" + OpenAiUtils.retrieveFile(""));
+        // 获取文件内容
+        System.out.println("文件内容：" + OpenAiUtils.retrieveFileContent(""));
+        // 删除文件
+        System.out.println("删除文件信息：" + OpenAiUtils.deleteFile(""));
+    }
+
+    @PostMapping("/fileTune")
+    public void fileTune() {
+        // 创建微调
+        FineTuneRequest fineTuneRequest = FineTuneRequest.builder().trainingFile("").build();
+        System.out.println("创建微调信息：" + OpenAiUtils.createFineTune(fineTuneRequest));
+        // 创建微调完成
+        CompletionRequest completionRequest = CompletionRequest.builder().build();
+        System.out.println("创建微调完成信息：" + OpenAiUtils.createFineTuneCompletion(completionRequest));
+        // 获取微调列表
+        System.out.println("获取微调列表：" + OpenAiUtils.listFineTunes());
+        // 获取微调信息
+        System.out.println("获取微调信息：" + OpenAiUtils.retrieveFineTune(""));
+        // 取消微调
+        System.out.println("取消微调信息：" + OpenAiUtils.cancelFineTune(""));
+        // 列出微调事件
+        System.out.println("列出微调事件：" + OpenAiUtils.listFineTuneEvents(""));
+        // 删除微调
+        System.out.println("删除微调信息：" + OpenAiUtils.deleteFineTune(""));
+    }
+
+    @PostMapping("/moderation")
+    public void moderation() {
+        // 创建moderation
+        ModerationRequest moderationRequest = ModerationRequest.builder().input("I want to kill them.").build();
+        System.out.println("创建moderation信息：" + OpenAiUtils.createModeration(moderationRequest));
     }
 }
