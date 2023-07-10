@@ -59,7 +59,7 @@ public class ChatGPTController {
      * 流式问答，输出结果到WEB浏览器端
      */
     @GetMapping("/streamChatWithWeb")
-    public void streamChatWithWeb(String content, HttpServletResponse response) throws IOException, InterruptedException {
+    public void streamChatWithWeb(String content, HttpServletResponse response) throws IOException {
         // 需要指定response的ContentType为流式输出，且字符编码为UTF-8
         response.setContentType("text/event-stream");
         response.setCharacterEncoding("UTF-8");
