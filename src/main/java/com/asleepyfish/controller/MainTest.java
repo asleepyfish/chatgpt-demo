@@ -241,4 +241,16 @@ public class MainTest {
         ModerationRequest moderationRequest = ModerationRequest.builder().input("I want to kill them.").build();
         System.out.println("创建moderation信息：" + openAiProxyService.createModeration(moderationRequest));
     }
+
+    @Test
+    public void baseUrl() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                // 自定义baseUrl
+                .baseUrl("https://openai.api2d.net/")
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        System.out.println("models列表：" + openAiProxyService.listModels());
+    }
 }

@@ -6,3 +6,4 @@ chatgpt:
   chat-model: gpt-3.5-turbo #可选
   retries: 10 #可选，默认为5
   session-expiration-time: 30 #可选，不填则会话永不过期
+  base-url: https://api.openai.com/ #可选，默认为https://api.openai.com/

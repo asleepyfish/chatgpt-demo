@@ -233,4 +233,10 @@ public class ChatGPTController {
         ModerationRequest moderationRequest = ModerationRequest.builder().input("I want to kill them.").build();
         System.out.println("创建moderation信息：" + OpenAiUtils.createModeration(moderationRequest));
     }
+
+    @PostMapping("/baseUrl")
+    public void baseUrl() {
+        // 先在application.yml中配置chatgpt.base-url
+        System.out.println("models列表：" + OpenAiUtils.listModels());
+    }
 }
