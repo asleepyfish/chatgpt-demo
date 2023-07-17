@@ -1,5 +1,7 @@
 package com.asleepyfish.controller;
 
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.Method;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.finetune.FineTuneRequest;
@@ -26,6 +28,20 @@ import java.util.Arrays;
  * @Description: 注意：所有代码示例均有基于和SpringBoot和直接Main方法调用两种实现。分别在类MainTest和类ChatGPTController中。
  */
 public class MainTest {
+    @Test
+    public void hutool() {
+        HttpRequest request = HttpRequest.post("https://apps.ichati.cn/1d6f32f8-b59d-46f8-85e9-7d434b83acd7/v1/embeddings"); // 替换为你的目标URL
+        request.method(Method.POST); // 设置请求方法，可以是GET、POST等
+        request.timeout(2000); // 设置超时时间，单位为毫秒
+        request.header("Content-Type", "application/json"); // 设置请求头，如果有需要的话
+        request.header("Authorization", "Bearer xxxxx"); // 设置请求头，如果有需要的话
+        request.body("{\n" +
+                "    \"model\":\"text-embedding-ada-002\",\n" +
+                "    \"input\":\"你好\"\n" +
+                "}"); // 设置请求体，如果有需要的话
+        String body = request.execute().body();// 执行请求，返回Response对象
+        System.out.println(body);
+    }
 
     @Test
     public void chat() {

@@ -15,9 +15,15 @@
     <description>chatgpt-demo</description>
     <properties>
         <java.version>1.8</java.version>
-        <chatgpt.version>1.3.1</chatgpt.version>
+        <chatgpt.version>1.3.2</chatgpt.version>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-http</artifactId>
+            <version>5.7.3</version>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -32,6 +38,11 @@
             <groupId>io.github.asleepyfish</groupId>
             <artifactId>chatgpt</artifactId>
             <version>${chatgpt.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
     </dependencies>
 
