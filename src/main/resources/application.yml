@@ -1,9 +1,9 @@
 chatgpt:
-  token: xxxxx
-#  proxy-host: 127.0.0.1 #可选
-#  proxy-port: 7890 #可选
-  model: text-davinci-003 #可选
-  chat-model: gpt-3.5-turbo #可选
-  retries: 10 #可选，默认为5
-  session-expiration-time: 30 #可选，不填则会话永不过期
-  base-url: https://api.openai.com/ #可选，默认为https://api.openai.com/
+  token: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx #必填
+#  proxy-host: 127.0.0.1 #需要代理时必填
+#  proxy-port: 7890 #需要代理时必填
+#  model: text-davinci-003 #可选
+#  chat-model: gpt-3.5-turbo #可选
+#  retries: 10 #可选，默认为5
+#  session-expiration-time: 30 #可选，不填则会话永不过期
+#  base-url: https://apps.ichati.cn/1d6f32f8-b59d-46f8-85e9-7d434b83acd7/ #可选，默认为https://api.openai.com/，请记住务必以/结尾
