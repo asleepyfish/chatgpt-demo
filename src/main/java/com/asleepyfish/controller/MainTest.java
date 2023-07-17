@@ -120,10 +120,12 @@ public class MainTest {
                 .proxyPort(7890)
                 .build();
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        // 单文本
         String text = "Once upon a time";
         System.out.println("文本：" + text);
         System.out.println("文本的嵌入向量：" + openAiProxyService.embeddings(text));
         System.out.println("=============================================");
+        // 文本数组
         String[] texts = {"Once upon a time", "There was a princess"};
         System.out.println("文本数组：" + Arrays.toString(texts));
         EmbeddingRequest embeddingRequest = EmbeddingRequest.builder()
