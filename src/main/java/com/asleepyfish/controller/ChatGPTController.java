@@ -74,8 +74,10 @@ public class ChatGPTController {
      * @param prompt 图片描述
      */
     @PostMapping("/createImage")
-    public void createImage(String prompt) {
-        System.out.println(OpenAiUtils.createImage(prompt));
+    public List<String> createImage(String prompt) {
+        List<String> imageList = OpenAiUtils.createImage(prompt);
+        System.out.println(imageList);
+        return imageList;
     }
 
     /**
