@@ -253,4 +253,34 @@ public class MainTest {
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
         System.out.println("models列表：" + openAiProxyService.listModels());
     }
+
+/*    @Test
+    public void okHttpClient() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        Dispatcher dispatcher = new Dispatcher();
+        dispatcher.setMaxRequests(100);
+        dispatcher.setMaxRequestsPerHost(10);
+        // 自定义okHttpClient
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .addInterceptor(new AuthenticationInterceptor(properties.getToken()))
+                .connectionPool(new ConnectionPool(100, 10, TimeUnit.SECONDS))
+                .readTimeout(Duration.ZERO.toMillis(), TimeUnit.MILLISECONDS)
+                .connectTimeout(Duration.ZERO.toMillis(), TimeUnit.MILLISECONDS)
+                .hostnameVerifier((hostname, session) -> true)
+                .proxy(new Proxy(Proxy.Type.SOCKS, new InetSocketAddress(properties.getProxyHost(), properties.getProxyPort())))
+                .proxyAuthenticator((route, response) -> {
+                    String credential = Credentials.basic("proxyUsername", "proxyPassword");
+                    return response.request().newBuilder()
+                            .header("Proxy-Authorization", credential)
+                            .build();
+                })
+                .dispatcher(dispatcher)
+                .build();
+        // 下面的openAiProxyService使用自定义的okHttpClient
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties, okHttpClient);
+        System.out.println("models列表：" + openAiProxyService.listModels());
+    }*/
 }
