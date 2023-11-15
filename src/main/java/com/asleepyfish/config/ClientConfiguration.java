@@ -1,9 +1,8 @@
 package com.asleepyfish.config;
 
 import io.github.asleepyfish.config.ChatGPTProperties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-
-import javax.annotation.Resource;
 
 /**
  * @Author: asleepyfish
@@ -13,7 +12,7 @@ import javax.annotation.Resource;
 @Configuration
 public class ClientConfiguration {
 
-    @Resource
+    @Autowired
     private ChatGPTProperties properties;
 
 /*    @Bean

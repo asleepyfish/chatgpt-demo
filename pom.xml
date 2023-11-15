@@ -15,7 +15,7 @@
     <description>chatgpt-demo</description>
     <properties>
         <java.version>1.8</java.version>
-        <chatgpt.version>1.3.4</chatgpt.version>
+        <chatgpt.version>1.3.5</chatgpt.version>
     </properties>
     <dependencies>
         <dependency>
