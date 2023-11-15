@@ -4,6 +4,7 @@ import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.finetune.FineTuneRequest;
 import com.theokanning.openai.image.CreateImageEditRequest;
+import com.theokanning.openai.image.CreateImageRequest;
 import com.theokanning.openai.image.CreateImageVariationRequest;
 import com.theokanning.openai.image.ImageResult;
 import com.theokanning.openai.moderation.ModerationRequest;
@@ -91,13 +92,17 @@ public class ChatGPTController {
         if (imageNum == 1) {
             response.setContentType("image/png");
             response.setHeader("Content-Disposition", "attachment; filename=generated.png");
+            OpenAiUtils.downloadImage(prompt, response.getOutputStream());
         } else {
             // 图片数量大于1时，下载的是zip压缩包
             response.setContentType("application/zip");
             response.setHeader("Content-Disposition", "attachment; filename=images.zip");
+            CreateImageRequest createImageRequest = CreateImageRequest.builder()
+                    .prompt(prompt)
+                    .n(imageNum)
+                    .build();
+            OpenAiUtils.downloadImage(createImageRequest, response.getOutputStream());
         }
-
-        OpenAiUtils.downloadImage(prompt, response.getOutputStream());
     }
 
     @PostMapping("/billing")
