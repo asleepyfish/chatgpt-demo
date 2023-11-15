@@ -17,11 +17,11 @@ import io.github.asleepyfish.enums.image.ImageResponseFormatEnum;
 import io.github.asleepyfish.enums.image.ImageSizeEnum;
 import io.github.asleepyfish.service.OpenAiProxyService;
 import io.github.asleepyfish.util.OpenAiUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -84,8 +84,20 @@ public class ChatGPTController {
      * 下载图片
      */
     @GetMapping("/downloadImage")
-    public void downloadImage(String prompt, HttpServletResponse response) {
-        OpenAiUtils.downloadImage(prompt, response);
+    public void downloadImage(String prompt, Integer imageNum, HttpServletResponse response) throws IOException {
+        if (imageNum == null || imageNum < 1) {
+            imageNum = 1;
+        }
+        if (imageNum == 1) {
+            response.setContentType("image/png");
+            response.setHeader("Content-Disposition", "attachment; filename=generated.png");
+        } else {
+            // 图片数量大于1时，下载的是zip压缩包
+            response.setContentType("application/zip");
+            response.setHeader("Content-Disposition", "attachment; filename=images.zip");
+        }
+
+        OpenAiUtils.downloadImage(prompt, response.getOutputStream());
     }
 
     @PostMapping("/billing")
