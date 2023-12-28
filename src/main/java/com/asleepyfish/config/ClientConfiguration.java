@@ -21,7 +21,7 @@ public class ClientConfiguration {
         dispatcher.setMaxRequests(100);
         dispatcher.setMaxRequestsPerHost(10);
         return new OkHttpClient.Builder()
-                .addInterceptor(new AuthenticationInterceptor(properties.getToken()))
+                .addInterceptor(new AuthenticationInterceptor(properties))
                 .connectionPool(new ConnectionPool(100, 10, TimeUnit.SECONDS))
                 .readTimeout(Duration.ZERO.toMillis(), TimeUnit.MILLISECONDS)
                 .connectTimeout(Duration.ZERO.toMillis(), TimeUnit.MILLISECONDS)

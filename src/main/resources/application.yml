@@ -1,9 +1,13 @@
 chatgpt:
-  token: sk-xxxxxxxxxxxxxxxxxxxx #必填
+  token: sk-xxx1 #必填
 #  proxy-host: 127.0.0.1 #需要代理时必填
 #  proxy-port: 7890 #需要代理时必填
 #  model: text-davinci-003 #可选
 #  chat-model: gpt-3.5-turbo #可选
 #  retries: 10 #可选，默认为5
 #  session-expiration-time: 30 #可选，不填则会话永不过期
-#  base-url: https://apps.ichati.cn/0a7699ac-bc73-4732-9263-55c1c01f56e3/ #可选，默认为https://api.openai.com/，请记住务必以/结尾
+  base-url: https://apps.ichati.cn/e4713307-eb91-4598-a88c-eff6eeccexxx/ #可选，默认为https://api.openai.com/，请记住务必以/结尾
+  token-strategy-impl: io.github.asleepyfish.strategy.RandomTokenStrategy #可选，默认为RandomTokenStrategy（随机）
+  alter-tokens: #可选，备选tokens，可以和token-strategy-impl结合，每次请求按策略分配token
+    - sk-xxx2
+    - sk-xxx3

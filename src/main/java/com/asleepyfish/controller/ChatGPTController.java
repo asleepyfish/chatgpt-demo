@@ -1,5 +1,6 @@
 package com.asleepyfish.controller;
 
+import com.knuddels.jtokkit.api.ModelType;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.finetune.FineTuneRequest;
@@ -257,5 +258,31 @@ public class ChatGPTController {
     public void baseUrl() {
         // 先在application.yml中配置chatgpt.base-url
         System.out.println("models列表：" + OpenAiUtils.listModels());
+    }
+
+    @GetMapping("/systemPrompt")
+    public void systemPrompt(String systemPrompt, String content, HttpServletResponse response) throws IOException {
+        System.out.println("初始系统级提示信息为：" + OpenAiUtils.getSystemPrompt());
+        // OpenAiUtils.setSystemPrompt("我是一个Java开发工程师，所有的代码请求都请用Java给我生成。");
+        OpenAiUtils.setSystemPrompt(systemPrompt);
+        // OpenAiUtils.createStreamChatCompletion("写一个迭代器模式的代码");
+        // 需要指定response的ContentType为流式输出，且字符编码为UTF-8
+        response.setContentType("text/event-stream");
+        response.setCharacterEncoding("UTF-8");
+        // 禁用缓存
+        response.setHeader("Cache-Control", "no-cache");
+        OpenAiUtils.createStreamChatCompletion(content, response.getOutputStream());
+        // System.out.println("当前的系统级信息提示为：" + OpenAiUtils.getSystemPrompt());
+        // 清理系统级提示信息
+        // OpenAiUtils.cleanUpSystemPrompt();
+        // System.out.println("清理后的系统级提示信息为：" + OpenAiUtils.getSystemPrompt());
+    }
+
+    @GetMapping("/countTokens")
+    public void countTokens(String text) {
+        System.out.println("当前输入文字使用模型[gpt-3.5-turbo] token总数为：" + OpenAiUtils.countTokens(text));
+        ModelType modelType = ModelType.GPT_4_32K;
+        // 实际上单就计算的token的数目上来说3.5和4是一样的
+        System.out.println("当前输入文字使用模型[gpt-4-32k] token总数为：" + OpenAiUtils.countTokens(text, modelType));
     }
 }
