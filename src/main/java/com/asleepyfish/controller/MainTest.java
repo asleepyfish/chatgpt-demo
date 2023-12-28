@@ -1,5 +1,7 @@
 package com.asleepyfish.controller;
 
+import com.asleepyfish.strategy.SelectSecondStrategy;
+import com.knuddels.jtokkit.api.ModelType;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.embedding.EmbeddingRequest;
 import com.theokanning.openai.finetune.FineTuneRequest;
@@ -249,6 +251,52 @@ public class MainTest {
         ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
                 // 自定义baseUrl
                 .baseUrl("https://openai.api2d.net/")
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        System.out.println("models列表：" + openAiProxyService.listModels());
+    }
+
+    @Test
+    public void systemPromptTest() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                // 自定义baseUrl
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        System.out.println("初始系统级提示信息为：" + openAiProxyService.getSystemPrompt());
+        openAiProxyService.setSystemPrompt("我是一个Java开发工程师，所有的代码请求都请用Java给我生成。");
+        openAiProxyService.createStreamChatCompletion("写一个迭代器模式的代码");
+        // System.out.println("当前的系统级信息提示为：" + openAiProxyService.getSystemPrompt());
+        // 清理系统级提示信息
+        // openAiProxyService.cleanUpSystemPrompt();
+        // System.out.println("清理后的系统级提示信息为：" + openAiProxyService.getSystemPrompt());
+    }
+
+    @Test
+    public void countTokensTest() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx")
+                // 自定义baseUrl
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .build();
+        OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
+        String text = "Hello World!";
+
+        System.out.println("当前输入文字使用模型[gpt-3.5-turbo] token总数为：" + openAiProxyService.countTokens(text));
+        ModelType modelType = ModelType.GPT_4_32K;
+        // 实际上单就计算的token的数目上来说3.5和4是一样的
+        System.out.println("当前输入文字使用模型[gpt-4-32k] token总数为：" + openAiProxyService.countTokens(text, modelType));
+    }
+
+    @Test
+    public void alterTokensTest() {
+        ChatGPTProperties properties = ChatGPTProperties.builder().token("sk-xxx1")
+                // 自定义baseUrl
+                .proxyHost("127.0.0.1")
+                .proxyPort(7890)
+                .alterTokens(Arrays.asList("sk-xxx2", "sk-xxx3"))
+                .tokenStrategyImpl(SelectSecondStrategy.class)
                 .build();
         OpenAiProxyService openAiProxyService = new OpenAiProxyService(properties);
         System.out.println("models列表：" + openAiProxyService.listModels());
